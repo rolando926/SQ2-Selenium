@@ -14,22 +14,29 @@ public class BasicSelenium {
     public static final String SEARCH_BUTTON = ".//button[@id='headerSearchButton']";
     public static final String LANDING_PAGE = ".//span[@class='original-keyword " +
             "u__regular' and contains(text(),'hammer')]";
+    public static final String HOME_PAGE = "http://homedepot.com";
 
     @Test
     public void openBrowser(){
+        String item = "hammer";
+
         // Open URL page based on the driver object
-        utils.driver.get("http://www.homedepot.com");
-        utils.waitElementDisplayed();
+        Assert.assertTrue("Could not validate main page.",
+                utils.navigateURL(HOME_PAGE));
+        System.out.println("Validated successful navigation to "+HOME_PAGE);
 
         //Search for header search bar and enter hammer
-        utils.driver.findElement(By.xpath(SEARCH_BOX)).sendKeys("hammer");
-        utils.waitElementDisplayed();
+        Assert.assertTrue("Could not validate search box.",
+                utils.validateTextBox(SEARCH_BOX,item));
+        System.out.println("Validated search box is present and entered "+item);
 
         // Click on search button
-        utils.driver.findElement(By.xpath(SEARCH_BUTTON)).click();
-        utils.waitElementDisplayed();
+        Assert.assertTrue("Could not validate search button.",
+                utils.validateButton(SEARCH_BUTTON));
+        System.out.println("Validated search button is present and event = click.");
 
         Assert.assertTrue(utils.verifyLandingPage("hammer",LANDING_PAGE));
+        System.out.println("Validated landing contains word "+item);
 
         // Close the driver
         utils.driver.close();
