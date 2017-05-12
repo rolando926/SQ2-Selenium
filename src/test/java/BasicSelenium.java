@@ -7,17 +7,14 @@ import org.openqa.selenium.By;
  */
 public class BasicSelenium {
     // Instantiation of our Utilities class
-    SeleniumUtils utils = new SeleniumUtils();
+    LandingPage utils = new LandingPage();
 
     // All my DOM objects
-    public static final String SEARCH_BOX = ".//input[@id='headerSearch']";
-    public static final String SEARCH_BUTTON = ".//button[@id='headerSearchButton']";
-    public static final String LANDING_PAGE = ".//span[@class='original-keyword " +
-            "u__regular' and contains(text(),'hammer')]";
+
     public static final String HOME_PAGE = "http://homedepot.com";
 
     @Test
-    public void openBrowser(){
+    public void validateItem(){
         String item = "hammer";
 
         // Open URL page based on the driver object
@@ -27,15 +24,15 @@ public class BasicSelenium {
 
         //Search for header search bar and enter hammer
         Assert.assertTrue("Could not validate search box.",
-                utils.validateTextBox(SEARCH_BOX,item));
+                utils.enterItemIntoSearchBox(utils.SEARCH_BOX,item));
         System.out.println("Validated search box is present and entered "+item);
 
         // Click on search button
         Assert.assertTrue("Could not validate search button.",
-                utils.validateButton(SEARCH_BUTTON));
+                utils.validateButton(utils.SEARCH_BUTTON));
         System.out.println("Validated search button is present and event = click.");
 
-        Assert.assertTrue(utils.verifyLandingPage("hammer",LANDING_PAGE));
+        Assert.assertTrue(utils.verifyLandingPage(utils.LANDING_PAGE));
         System.out.println("Validated landing contains word "+item);
 
         // Close the driver
