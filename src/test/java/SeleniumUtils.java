@@ -104,4 +104,8 @@ public class SeleniumUtils {
             ie.printStackTrace();
         }
     }
+
+    public String insertIndexIntoXpath(String xpath, int index){
+        return xpath.replace("[]","["+ index +"]");
+    }
 }

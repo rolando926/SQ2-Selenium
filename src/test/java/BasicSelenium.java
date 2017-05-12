@@ -32,8 +32,14 @@ public class BasicSelenium {
                 utils.validateButton(utils.SEARCH_BUTTON));
         System.out.println("Validated search button is present and event = click.");
 
+        // Verify we land on the correct page = Landing Page
         Assert.assertTrue(utils.verifyLandingPage(utils.LANDING_PAGE));
         System.out.println("Validated landing contains word "+item);
+
+        // Verify user can select 3rd item from list
+        Assert.assertTrue(utils.verifyAnyAddToCartButtonCanBeSelected(utils.LANDING_PAGE,utils.ADD_TO_CART_ITEM,3));
+
+        utils.syncElement("SECONDS",10);
 
         // Close the driver
         utils.driver.close();
