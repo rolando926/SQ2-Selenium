@@ -3,8 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="d9a21e49-47d4-470d-9097-b0d6124d6793" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/BasicSelenium.java" afterPath="$PROJECT_DIR$/src/test/java/BasicSelenium.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/SeleniumUtils.java" afterPath="$PROJECT_DIR$/src/test/java/SeleniumUtils.java" />
     </list>
     <ignored path="DotCom.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -812,7 +810,14 @@
       <option name="project" value="LOCAL" />
       <updated>1494617364294</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Adding Landing Page class and more generic utils methods">
+      <created>1494619570776</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1494619570776</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -918,7 +923,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Adding more methods to the Selenium Utils" />
-    <option name="LAST_COMMIT_MESSAGE" value="Adding more methods to the Selenium Utils" />
+    <MESSAGE value="Adding Landing Page class and more generic utils methods" />
+    <option name="LAST_COMMIT_MESSAGE" value="Adding Landing Page class and more generic utils methods" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
