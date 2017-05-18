@@ -1,3 +1,4 @@
+import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Test;
 import org.openqa.selenium.By;
@@ -7,7 +8,7 @@ import org.openqa.selenium.By;
  */
 public class BasicSelenium {
     // Instantiation of our Utilities class
-    LandingPage utils = new LandingPage();
+    static Overlay utils = new Overlay();
 
     // All my DOM objects
 
@@ -29,7 +30,7 @@ public class BasicSelenium {
 
         // Click on search button
         Assert.assertTrue("Could not validate search button.",
-                utils.validateButton(utils.SEARCH_BUTTON));
+                utils.clickButton(utils.SEARCH_BUTTON));
         System.out.println("Validated search button is present and event = click.");
 
         // Verify we land on the correct page = Landing Page
@@ -37,10 +38,30 @@ public class BasicSelenium {
         System.out.println("Validated landing contains word "+item);
 
         // Verify user can select 3rd item from list
-        Assert.assertTrue(utils.verifyAnyAddToCartButtonCanBeSelected(utils.LANDING_PAGE,utils.ADD_TO_CART_ITEM,3));
+        Assert.assertTrue("Could not validate 3rd Add To Cart item is clickable.",
+                utils.verifyAnyAddToCartButtonCanBeSelected(utils.LANDING_PAGE,utils.ADD_TO_CART_ITEM,3));
+        System.out.println("Validated 3rd item added to cart.");
 
-        utils.syncElement("SECONDS",10);
+        //utils.syncElement("SECONDS",10);
 
+        utils.driver.switchTo().frame(utils.driver.findElement(By.xpath("(.//iframe[@class='thd-overlay-frame'])[2]")));
+        if(utils.driver.findElement(By.xpath(".//span[@class='u__husky']")).isDisplayed()){
+            System.out.println("Validated Overlay information.");
+        }
+        utils.driver.switchTo().defaultContent();
+
+
+        // Verify we land at the Overlay after selecting Add To Cart
+        //Assert.assertTrue("Could not verify Overlay division.",
+        //        utils.verifyOverlayPage());
+
+        //utils.syncElement("SECONDS",10);
+
+
+    }
+
+    @AfterClass
+    public static void cleanUp(){
         // Close the driver
         utils.driver.close();
     }

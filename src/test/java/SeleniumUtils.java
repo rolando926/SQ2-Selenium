@@ -8,30 +8,82 @@ import java.util.concurrent.TimeUnit;
  * Created by RXC8414 on 5/9/2017.
  */
 public class SeleniumUtils {
-    public static final int MAX_TIME = 10;
+    public static final int MAX_TIME = 15;
     public WebDriver driver;
-    public static final String DRIVER_PATH = "C:\\GitHub Repos\\DotCom\\chromedriver.exe";
 
-    SeleniumUtils(){
+    public SeleniumUtils(){
         //Setting Chrome driver properties
-        System.setProperty("webdriver.chrome.driver",DRIVER_PATH);
+        String path = System.getProperty("user.dir")+"\\chromedriver.exe";
+        System.setProperty("webdriver.chrome.driver", path);
         // Completing instantiation
         driver = new ChromeDriver();
+        driver.manage().window().maximize();
     }
 
-    public boolean waitUntilElementDisplayed(String element){
-        // Start a zero and increment a second if element is not available up to a limit
+    public boolean waitUntilElementDisplayed(String expression){
         int counter = 0;
-        do{
-            // Verify if element is displayed or not
-            if(driver.findElement(By.xpath(element)).isDisplayed()){
-                return true; // if displayed return back
+        do {
+            if (verifyDisplayed(expression)){
+                return true;
             }
-            syncElement("SECONDS",1); // increment by 1 second
-            counter++; // incrementing by a second
-        }while(counter < MAX_TIME); // limit
-        return false; // guilty until proven innocent
+            else if (counter > 3){
+                if(verifyEnabled(expression)){
+                    return true;
+                }
+
+                else if (verifyLocation(expression)){
+                    return true;
+                }
+            }
+
+            counter++;
+            try {
+                TimeUnit.MILLISECONDS.sleep(950);
+            }catch(Exception e){
+                return false;
+            }
+        } while (counter < 20);
+
+        return false;
     }
+
+    public boolean verifyDisplayed(String expression){
+        try {
+            TimeUnit.MILLISECONDS.sleep(50);
+            if (driver.findElement(By.xpath(expression)).isDisplayed()) {
+                return true;
+            }
+        }catch(Exception ne){
+            return false;
+        }
+        return false;
+    }
+
+    public boolean verifyEnabled(String expression){
+        try {
+            TimeUnit.MILLISECONDS.sleep(50);
+            if (driver.findElement(By.xpath(expression)).isEnabled()) {
+                return true;
+            }
+        }catch(Exception ne){
+            return false;
+        }
+        return false;
+    }
+
+    public boolean verifyLocation(String expression){
+        try{
+            TimeUnit.MILLISECONDS.sleep(50);
+            if(driver.findElement(By.xpath(expression)).getLocation().x < 0 ||
+                    driver.findElement(By.xpath(expression)).getLocation().y < 0){
+                return true;
+            }
+        }catch(Exception ne){
+            return false;
+        }
+        return false;
+    }
+
 
     // Selenium command for navigating to a page
     public boolean navigateURL(String url){
@@ -47,8 +99,13 @@ public class SeleniumUtils {
     public boolean verifyLandingPage(String xpath){
         // Make sure element is displayed on landing page
         // Validation happening through XPath
-        if(driver.findElement(By.xpath(xpath)).isDisplayed()){
-            return true;
+        try{
+            if(waitUntilElementDisplayed(xpath)){
+                return true;
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+            return false;
         }
         return false;
     }
@@ -62,20 +119,23 @@ public class SeleniumUtils {
     }
 
     // Entering text into a text box
-    public boolean enterTextIntoTextBox(String element, String text){
-        if(waitUntilElementDisplayed(element)){
-            try {
-                syncElement("MILLISECONDS",100); // Syncing Selenium
-                driver.findElement(By.xpath(element)).sendKeys(text); //command for entering text
+    public boolean enterTextIntoTextBox(String strText, String element){
+        try {
+            if (waitUntilElementDisplayed(element)) {
+                driver.findElement(By.xpath(element)).clear();
+                driver.findElement(By.xpath(element)).sendKeys(strText);
                 return true;
-            }catch(Exception e){
-                return false;
             }
+        }catch(Exception e){
+            e.printStackTrace();
+            return false;
         }
         return false;
     }
 
-    public boolean validateButton(String element){
+
+
+    public boolean clickButton(String element){
         if(waitUntilElementDisplayed(element)){
             try {
                 syncElement("MILLISECONDS",100); //Syncing
@@ -107,5 +167,24 @@ public class SeleniumUtils {
 
     public String insertIndexIntoXpath(String xpath, int index){
         return xpath.replace("[]","["+ index +"]");
+    }
+
+    public boolean switchDriver(String target, String iFrame){
+        if(target.toUpperCase().equals("IFRAME")){
+            try {
+                driver.switchTo().frame(driver.findElement(By.xpath(iFrame)));
+                return true;
+            }catch(Exception e){
+                return false;
+            }
+        }
+        else{
+            try {
+                driver.switchTo().defaultContent();
+                return true;
+            }catch(Exception e){
+                return false;
+            }
+        }
     }
 }
