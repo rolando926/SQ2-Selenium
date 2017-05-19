@@ -1,5 +1,6 @@
 import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
 
@@ -9,15 +10,14 @@ import org.openqa.selenium.By;
 public class BasicSelenium {
     // Instantiation of our Utilities class
     static Overlay utils = new Overlay();
+    String item = "hammer";
 
     // All my DOM objects
 
     public static final String HOME_PAGE = "http://homedepot.com";
 
-    @Test
-    public void validateItem(){
-        String item = "hammer";
-
+    @Before
+    public void setup(){
         // Open URL page based on the driver object
         Assert.assertTrue("Could not validate main page.",
                 utils.navigateURL(HOME_PAGE));
@@ -37,12 +37,14 @@ public class BasicSelenium {
         Assert.assertTrue(utils.verifyLandingPage(utils.LANDING_PAGE));
         System.out.println("Validated landing contains word "+item);
 
+    }
+
+    public void validateItem(){
+
         // Verify user can select 3rd item from list
         Assert.assertTrue("Could not validate 3rd Add To Cart item is clickable.",
                 utils.verifyAnyAddToCartButtonCanBeSelected(utils.LANDING_PAGE,utils.ADD_TO_CART_ITEM,3));
         System.out.println("Validated 3rd item added to cart.");
-
-        //utils.syncElement("SECONDS",10);
 
         utils.driver.switchTo().frame(utils.driver.findElement(By.xpath("(.//iframe[@class='thd-overlay-frame'])[2]")));
         if(utils.driver.findElement(By.xpath(".//span[@class='u__husky']")).isDisplayed()){
@@ -56,13 +58,16 @@ public class BasicSelenium {
         //        utils.verifyOverlayPage());
 
         //utils.syncElement("SECONDS",10);
+    }
 
-
+    @Test
+    public void getDescriptionHammer(){
+        utils.validateItemDescriptionFromPrice();
     }
 
     @AfterClass
     public static void cleanUp(){
         // Close the driver
-        utils.driver.close();
+        //utils.driver.close();
     }
 }

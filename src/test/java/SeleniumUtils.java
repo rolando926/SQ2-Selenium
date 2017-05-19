@@ -1,7 +1,9 @@
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -119,7 +121,7 @@ public class SeleniumUtils {
     }
 
     // Entering text into a text box
-    public boolean enterTextIntoTextBox(String strText, String element){
+    public boolean enterTextIntoTextBox(String element, String strText){
         try {
             if (waitUntilElementDisplayed(element)) {
                 driver.findElement(By.xpath(element)).clear();
@@ -185,6 +187,16 @@ public class SeleniumUtils {
             }catch(Exception e){
                 return false;
             }
+        }
+    }
+
+    public List<WebElement> getElements(String xpath){
+        try{
+            List<WebElement> list = driver.findElements(By.xpath(xpath));
+            return list;
+        }catch(Exception e){
+            e.printStackTrace();
+            return null;
         }
     }
 }
