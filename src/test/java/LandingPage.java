@@ -8,12 +8,15 @@ import java.util.List;
  */
 public class LandingPage extends MainPage {
     public static final String LANDING_PAGE = ".//span[@class='original-keyword " +
-            "u__regular' and contains(text(),'hammer')]";
+            "u__regular' and contains(text(),'TO_REPLACE')]";
     public static final String ADD_TO_CART_ITEM = "(.//span[@class='bttn__content' " +
             "and text() = 'Add To Cart'])[]";
     public static final String WRAPPER = ".//div[contains(@class,'plp-pod plp-pod--default pod-item--')]";
     public static final String PRICE = ".//div[@class='price']";
     public static final String DESCRIPTION = ".//div[@class='pod-plp__description js-podclick-analytics']//a";
+
+    ///////// Using the By class /////////
+    public static final By DESC = By.xpath(".//div[@class='pod-plp__description js-podclick-analytics']//a");
 
     public boolean verifyAnyAddToCartButtonCanBeSelected(String element1, String element2, int index){
         if(waitUntilElementDisplayed(element1)){
@@ -25,6 +28,16 @@ public class LandingPage extends MainPage {
         }
         return false;
     }
+
+    public boolean verifyLandingPage(String item){
+        String str = LANDING_PAGE;
+        str = str.replace("TO_REPLACE",item);
+        if(super.verifyLandingPage(str)){
+            return true;
+        }
+        return false;
+    }
+
 
     public boolean validateItemDescriptionFromPrice(){
         if(waitUntilElementDisplayed(WRAPPER)){
@@ -40,6 +53,25 @@ public class LandingPage extends MainPage {
                     return true;
                 }
 
+            }
+        }
+        return false;
+    }
+
+    public boolean validateCanSelectNItem(String item, int n){
+        int counter = 1;
+        if(waitUntilElementDisplayed(WRAPPER)){
+            for(WebElement element:getElements(WRAPPER)){
+                String desc = element.findElement(DESC).getText();
+                if(desc.contains(item)){
+                    if(counter == n){
+                        System.out.println("Description = "+desc);
+                        String price = element.findElement(By.xpath(PRICE)).getText();
+                        System.out.println("Price = "+Integer.parseInt(price.substring(1,price.length()))/100.0);
+                        return true;
+                    }
+                    counter++;
+                }
             }
         }
         return false;

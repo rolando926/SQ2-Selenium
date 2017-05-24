@@ -13,12 +13,16 @@ public class MainPage extends SeleniumUtils{
         int counter = 0;
         do{
             // Grabs text from element
-            String text = driver.findElement(By.xpath(STORE_LOCATOR)).getText();
-            if(!text.contains("Choose")){
-                return true;
+            try {
+                String text = driver.findElement(By.xpath(STORE_LOCATOR)).getText();
+                if (!text.contains("Choose")) {
+                    return true;
+                }
+                syncElement("MILLISECONDS", 100);
+                counter++;
+            }catch(Exception e){
+                continue;
             }
-            syncElement("MILLISECONDS",100);
-            counter++;
         }while(counter < 100);
         return false;
     }

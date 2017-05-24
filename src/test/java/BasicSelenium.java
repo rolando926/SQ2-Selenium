@@ -10,7 +10,7 @@ import org.openqa.selenium.By;
 public class BasicSelenium {
     // Instantiation of our Utilities class
     static Overlay utils = new Overlay();
-    String item = "hammer";
+    String item = "Screwdriver";
 
     // All my DOM objects
 
@@ -34,8 +34,9 @@ public class BasicSelenium {
         System.out.println("Validated search button is present and event = click.");
 
         // Verify we land on the correct page = Landing Page
-        Assert.assertTrue(utils.verifyLandingPage(utils.LANDING_PAGE));
+        Assert.assertTrue(utils.verifyLandingPage(item));
         System.out.println("Validated landing contains word "+item);
+
 
     }
 
@@ -62,12 +63,13 @@ public class BasicSelenium {
 
     @Test
     public void getDescriptionHammer(){
-        utils.validateItemDescriptionFromPrice();
+        //utils.validateItemDescriptionFromPrice();
+        utils.validateCanSelectNItem("Husky",3);
     }
 
     @AfterClass
     public static void cleanUp(){
         // Close the driver
-        //utils.driver.close();
+        utils.driver.close();
     }
 }
